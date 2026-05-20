@@ -4,11 +4,10 @@ import SettingsIcon from '@dt-advisory/assets/svgs/settings.svg?react';
 import { useAuthenticationFlow } from '@dt-advisory/hooks/useAuthenticationFlow';
 import { useAuthentication } from '@dt-advisory/providers/Authentication';
 import { useConfigs } from '@dt-advisory/providers/Configs';
-import { useEmbedder } from '@dt-advisory/providers/Embedder';
 import { useUserConfigurationStore } from '@dt-advisory/store/UserConfiguration/UserConfiguration';
 import { ExitToApp } from '@mui/icons-material';
 import { Box, IconButton } from '@mui/material';
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { OperationInfo as OperationInfoModal } from '../OperationInfo';
 import SyncIcon from '../SyncIcon/SyncIcon';
 import UserConfigurationModal from '../UserConfigurationModal';
@@ -20,7 +19,7 @@ import HeaderConfigValues from './components/HeaderConfigValues';
 const AppHeader = (): JSX.Element => {
   const { logout: authFlowLogout } = useAuthenticationFlow();
   const configs = useConfigs();
-  const { isInIframe: isEmbedded } = useEmbedder();
+
   const { signOut } = useAuthentication();
   const [visibleOperationInfo, setVisibleOperationInfo] = useState(false);
   const setSettingsModalOpen = useUserConfigurationStore((x) => x.setSettingsModalOpen);
@@ -61,7 +60,7 @@ const AppHeader = (): JSX.Element => {
           <SettingsIcon css={iconStyle} />
         </IconButton>
 
-        {configs?.enableAuthentication && !isEmbedded && (
+        {configs?.enableAuthentication && (
           <IconButton
             className="at_main_topBar_btn_signout"
             data-testid="at_main_topBar_btn_signout"
