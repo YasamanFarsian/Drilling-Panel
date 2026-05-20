@@ -1,10 +1,5 @@
-/* eslint-disable max-lines-per-function, @typescript-eslint/no-explicit-any, complexity */
-import { OperationInfoType } from '@dt-advisory/api/operationInfo/operationInfo.types';
-import { UnitTypeEnums } from '@dt-advisory/helpers/units/unitsHelper';
-import useUnitLabels from '@dt-advisory/hooks/useUnitLabels';
 import { Box, Skeleton } from '@mui/material';
 import { useTheme } from '@mui/styles';
-import React from 'react';
 import useDimensions from 'react-cool-dimensions';
 import { VictoryArea, VictoryAxis, VictoryChart, VictoryContainer, VictoryLabel } from 'victory';
 import { GeoPressureToggleValue } from './components/GeoPressureToggler';
@@ -19,36 +14,26 @@ import {
   skeletonContainerStyle,
   widgetContainerStyle,
 } from './GeoPressure.style';
-import { geoPressureWidgetHelper } from './GeoPressureWidgetHelper';
+import {
+  geoPressureWidgetHelper,
+  GeoPressureWidgetHelperPropsType,
+} from './GeoPressureWidgetHelper';
 import { useCustomPaddingGeoPressureGraph } from './hooks/useCustomPaddingGeoPressureGraph';
 import { useScalingTickSize } from './hooks/useScalingTickSize';
 
-type GeoPressureWidgetType = {
-  data?: OperationInfoType['geoPressure'];
-  mode: GeoPressureToggleValue;
-};
+type GeoPressureWidgetType = GeoPressureWidgetHelperPropsType;
 
 export const GeoPressureWidget = ({ data, mode }: GeoPressureWidgetType) => {
   const theme = useTheme();
   const customPadding = useCustomPaddingGeoPressureGraph();
-  const { getLabel } = useUnitLabels();
-  const getYAxisLabel = (toggleValue: GeoPressureToggleValue): string => {
-    const dynamicLabel =
-      toggleValue === GeoPressureToggleValue.MD
-        ? 'operationInfo.geoPressure.mudWeightData.axisY.mode.md.dynamic.label'
-        : 'operationInfo.geoPressure.mudWeightData.axisY.mode.tvd.dynamic.label';
-    return getLabel(dynamicLabel, UnitTypeEnums.Depth);
-  };
-
   const isDark = theme.mode === 'dark';
   const defaultTheme = getDefaultTheme(isDark);
-  const YAxisLabel = getYAxisLabel(mode);
+  const yLabel = mode === GeoPressureToggleValue.MD ? 'MD (m)' : 'TVD (m)';
 
   const { mudWeightData, fracturationPressureInEMW, porePressureGradientInEMW } =
     geoPressureWidgetHelper({ mode, data });
 
-  const geoPressureWidgetWrapper = useDimensions();
-
+  const wrapper = useDimensions();
   const tick = useScalingTickSize();
 
   if (!data)
@@ -57,13 +42,14 @@ export const GeoPressureWidget = ({ data, mode }: GeoPressureWidgetType) => {
         <Skeleton width="100%" height="400px" />
       </div>
     );
+
   return (
-    <Box ref={geoPressureWidgetWrapper.observe} css={widgetContainerStyle}>
+    <Box ref={wrapper.observe} css={widgetContainerStyle}>
       <VictoryChart
         padding={customPadding}
         theme={defaultTheme}
-        height={geoPressureWidgetWrapper.height}
-        width={geoPressureWidgetWrapper.width}
+        height={wrapper.height}
+        width={wrapper.width}
         containerComponent={<VictoryContainer responsive={false} />}
         horizontal
       >
@@ -71,25 +57,17 @@ export const GeoPressureWidget = ({ data, mode }: GeoPressureWidgetType) => {
           crossAxis={false}
           invertAxis
           axisLabelComponent={<VictoryLabel dy={-5} />}
-          orientation={'left'}
-          label={YAxisLabel}
-          groupComponent={<g role="geo_pressure_y_axis" />}
+          orientation="left"
+          label={yLabel}
           tickLabelComponent={<VictoryLabel dx={15} />}
           tickFormat={(y: number) => y}
-          style={{
-            ticks: {
-              color: 'transparent',
-            },
-          }}
+          style={{ ticks: { color: 'transparent' } }}
         />
         <VictoryAxis
           dependentAxis
           axisLabelComponent={<VictoryLabel dy={10} />}
-          orientation={'bottom'}
-          label={getLabel(
-            'operationInfo.geoPressure.mudWeightData.axisX.dynamic.label',
-            UnitTypeEnums.Density,
-          )}
+          orientation="bottom"
+          label="Equivalent Mud Weight (sg)"
           style={getAxisStyle(isDark, tick)}
           tickFormat={(x: number) => (x % 2 !== 0 ? x : '')}
           tickComponent={<Tick long={(x: number) => x % 2 !== 0} />}

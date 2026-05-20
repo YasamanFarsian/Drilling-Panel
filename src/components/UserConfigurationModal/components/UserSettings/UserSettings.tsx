@@ -1,19 +1,11 @@
 /* eslint-disable max-lines-per-function */
-import { Box, Tab, Tabs } from '@mui/material';
+import { useConfigs } from '@dt-advisory/providers/Configs';
+import { Box } from '@mui/material';
 import React from 'react';
 import { useIntl } from 'react-intl';
-import { useConfigs } from '@dt-advisory/providers/Configs';
-import AppearanceAndNotifications from '../AppearanceAndNotifications';
-import HeaderLayout from '../HeaderLayout';
 import TemplatesLayout from '../TemplatesLayout';
 import WidgetsLayout from '../WidgetsLayout';
-import {
-  layoutSettingsStyle,
-  layoutSettingTabPanelStyle,
-  tabRootStyle,
-  tabStyle,
-  userSettingStyle,
-} from './UserSettings.style';
+import { layoutSettingsStyle, layoutSettingTabPanelStyle } from './UserSettings.style';
 
 type TabPanelPropsType = {
   children?: React.ReactNode;
@@ -62,35 +54,11 @@ const UserSettings = (): JSX.Element => {
       overflow="hidden"
       mt={2}
     >
-      <Box css={userSettingStyle} sx={{ borderBottom: 1, borderColor: 'divider' }}>
-        <Tabs css={tabRootStyle} value={value} onChange={handleChange} aria-label="settings tabs">
-          <Tab
-            css={tabStyle}
-            label={formatMessage({
-              id: 'userConfiguration.settings.tabs.layoutSettings.label',
-              defaultMessage: 'Appearance and Notifications',
-            })}
-            {...a11yProps(0)}
-          />
-          <Tab
-            css={tabStyle}
-            label={formatMessage({
-              id: 'userConfiguration.settings.tabs.appearanceAndNotifications.label',
-              defaultMessage: 'Layout Settings',
-            })}
-            {...a11yProps(1)}
-          />
-        </Tabs>
-      </Box>
       <TabPanel css={layoutSettingTabPanelStyle} value={value} index={0}>
         <Box css={layoutSettingsStyle}>
-          <HeaderLayout />
           <WidgetsLayout />
           <TemplatesLayout />
         </Box>
-      </TabPanel>
-      <TabPanel css={layoutSettingTabPanelStyle} value={value} index={1}>
-        <AppearanceAndNotifications operationSelectEnabled={operationSelectEnabled} />
       </TabPanel>
     </Box>
   );

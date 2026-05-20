@@ -478,7 +478,6 @@
   "userConfiguration.settings.headerLayout.dropDown.section": "Seksjon",
   "userConfiguration.settings.headerLayout.dropDown.wellName": "Vel navn",
   "userConfiguration.settings.headerLayout.title": "Overskriftsoppsett",
-  "userConfiguration.settings.tabs.appearanceAndNotifications.label": "Utseende og varsler",
   "userConfiguration.settings.tabs.layoutSettings.label": "Layoutinnstillinger",
   "userConfiguration.settings.templatesLayout.deleteTemplateDialog.confirmBtn": "Slett mal",
   "userConfiguration.settings.templatesLayout.deleteTemplateDialog.description": "Er du sikker på at du vil slette <bold>{name}</bold> ? Dette kan ikke angres.",
