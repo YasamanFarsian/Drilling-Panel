@@ -1,4 +1,4 @@
-import Authenticate from '@dt-advisory/components/Authenticate';
+import MainLayout from '@dt-advisory/components/MainLayout';
 import LoadingPage from '@dt-advisory/pages/LoadingPage';
 import NotFoundPage from '@dt-advisory/pages/NotFoundPage';
 import React, { Suspense } from 'react';
@@ -14,7 +14,7 @@ const DashboardPage = () => (
 const routes = [
   {
     path: '/',
-    element: <Authenticate />,
+    element: <MainLayout />,
     children: [
       {
         path: '/',

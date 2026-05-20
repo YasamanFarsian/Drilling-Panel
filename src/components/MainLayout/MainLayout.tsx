@@ -1,8 +1,6 @@
 /* eslint-disable max-lines-per-function */
-import FullPageLoading from '@dt-advisory/components/FullPageLoading';
-import { useUserConfiguration } from '@dt-advisory/components/MainLayout/useUserConfiguration';
+
 import { handleRigCodeAndRedirectUrl, LocalStorageKeys } from '@dt-advisory/helpers/launcherHelper';
-import { useSettingsStore } from '@dt-advisory/store/Settings';
 import { useEffect } from 'react';
 import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 import AppHeader from '../AppHeader';
@@ -11,8 +9,6 @@ import useResponsiveMainLayout from './useResponsiveMainLayout';
 
 const MainLayout = (): JSX.Element => {
   const mainLayoutRef = useResponsiveMainLayout();
-  const { isLoading, isLoadingUnitsSettings } = useUserConfiguration();
-  const isHeaderVisible = useSettingsStore((x) => x.settings.isHeaderVisible);
 
   const location = useLocation();
   const navigate = useNavigate();
@@ -37,10 +33,6 @@ const MainLayout = (): JSX.Element => {
       );
     }
   }, []);
-
-  if (isLoading || isLoadingUnitsSettings) {
-    return <FullPageLoading status="Loading user settings..." />;
-  }
 
   return (
     <section data-testid="main_layout" ref={mainLayoutRef} css={containerStyle}>
