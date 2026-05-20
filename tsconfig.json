@@ -1,0 +1,43 @@
+{
+  "compilerOptions": {
+    "jsxImportSource": "@emotion/react",
+    "baseUrl": "./",
+    "paths": {
+      "@mui/styled-engine": ["./node_modules/@mui/styled-engine-sc"],
+      "@dt-advisory/*": ["./src/*"],
+      "@/*": ["./src/*"]
+    },
+    "target": "ESNext",
+    "lib": ["dom", "dom.iterable", "esnext"],
+
+    /* Bundler mode */
+    "moduleResolution": "node",
+    "allowImportingTsExtensions": true,
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "moduleDetection": "force",
+    "noEmit": true,
+    "jsx": "react-jsx",
+
+    "allowJs": true,
+    "skipLibCheck": true,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "strict": true,
+    "forceConsistentCasingInFileNames": true,
+    "noFallthroughCasesInSwitch": true,
+    "module": "ESNext",
+    "incremental": true,
+    "types": [
+      "vite/client",
+      "jest",
+      "vite-plugin-svgr/client",
+      "@testing-library/jest-dom",
+      "node"
+    ],
+    "typeRoots": ["node_modules/@types"]
+  },
+  "include": ["src", "types"],
+  "exclude": ["node_modules", "src/**/__*.*", "../../node_modules"],
+  "references": [{ "path": "./tsconfig.node.json" }]
+}

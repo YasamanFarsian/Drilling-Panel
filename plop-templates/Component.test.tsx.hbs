@@ -1,0 +1,12 @@
+import React from 'react';
+import { renderWithThemeProviders } from '@/helpers/tests/renderWithContext';
+import {{pascalCase name}}, { {{pascalCase name}}PropsType } from './{{pascalCase name}}';
+
+describe('{{pascalCase name}}', () => {
+  const mockedProps: {{pascalCase name}}PropsType = {};
+
+  it('should render without crashing', () => {
+    const { getByTestId } = renderWithThemeProviders(<{{pascalCase name}} {...mockedProps} />);
+    expect(getByTestId('TODO')).toBeInTheDocument();
+  });
+});

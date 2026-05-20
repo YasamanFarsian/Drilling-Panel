@@ -1,0 +1,93 @@
+{
+  "operationId": "1234",
+  "lastUpdated": "2023-04-04T06:56:50.592825Z",
+  "isOnBottom": false,
+  "isInSlips": false,
+  "tripspeed": {
+    "enableWarnings": true,
+    "lastUpdated": "2023-04-04T06:56:50.6972932Z",
+    "data": {
+      "unit": "m/s",
+      "max": 8.645,
+      "min": -6.645,
+      "dynamicUpper": false,
+      "dynamicLower": false,
+      "upper": 7.95,
+      "lower": -5.95,
+      "current": 3,
+      "status": 2,
+      "active": true
+    }
+  },
+  "flow": {
+    "underReamer": true,
+    "minActFlowRate": 500,
+    "maxActFlowRate": 1850,
+    "enableWarnings": true,
+    "lastUpdated": "2023-04-04T06:56:50.6972906Z",
+    "data": {
+      "unit": "liter/minute",
+      "max": 1890,
+      "min": -90,
+      "dynamicUpper": false,
+      "dynamicLower": false,
+      "upper": 1800,
+      "lower": 0,
+      "current": 1810,
+      "status": 2,
+      "active": true
+    }
+  },
+  "spp": {
+    "isSteadyStateFlow": true,
+    "enableWarnings": true,
+    "lastUpdated": "2023-04-04T06:56:50.6972938Z",
+    "data": {
+      "unit": "bar",
+      "max": 5.25,
+      "min": 0,
+      "dynamicUpper": false,
+      "dynamicLower": true,
+      "upper": 5,
+      "lower": 0,
+      "current": 2.25619,
+      "status": 2,
+      "active": true
+    }
+  },
+  "hookload": {
+    "enableWarnings": true,
+    "lastUpdated": "2023-04-04T06:56:50.6972935Z",
+    "data": {
+      "unit": "ton",
+      "max": 141.44340880632754,
+      "min": 55.38839288750911,
+      "dynamicUpper": false,
+      "dynamicLower": false,
+      "upper": 137.531817173654,
+      "lower": 59.29998452018268,
+      "current": 99.397390625,
+      "status": 2,
+      "active": true
+    }
+  },
+  "torque": {
+    "enableWarnings": true,
+    "lastUpdated": "2023-04-04T06:56:50.6972941Z",
+    "data": {
+      "unit": "kN.m",
+      "max": 34.92466314130032,
+      "min": 0,
+      "dynamicUpper": false,
+      "dynamicLower": true,
+      "upper": 33.26158394409555,
+      "lower": 0,
+      "current": 15.950957641601562,
+      "status": 2,
+      "active": true
+    }
+  },
+  "Method": "MPD",
+  "currentTime": "2023-04-04T06:56:54.8317983Z",
+  "isLive": false
+}

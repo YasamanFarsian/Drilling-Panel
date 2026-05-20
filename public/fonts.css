@@ -1,0 +1,76 @@
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,400;0,500;0,700;1,400&display=swap');
+@font-face {
+  font-family: 'SF Pro Display';
+  font-style: normal;
+  font-weight: 300;
+  font-display: swap;
+  src:
+    local('SF Pro Display'),
+    local('SF-Pro-Display-Light'),
+    url(/fonts/SF-Pro-Display-Light.otf) format('otf');
+}
+
+@font-face {
+  font-family: 'SF Pro Display';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src:
+    local('SF Pro Display'),
+    local('SF-Pro-Display-Regular'),
+    url(/fonts/SF-Pro-Display-Regular.otf) format('otf');
+}
+
+@font-face {
+  font-family: 'SF Pro Display';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src:
+    local('SF Pro Display'),
+    local('SF-Pro-Display-Medium'),
+    url(/fonts/SF-Pro-Display-Medium.otf) format('otf');
+}
+
+@font-face {
+  font-family: 'SF Pro Display';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src:
+    local('SF Pro Display'),
+    local('SF-Pro-Display-Semibold'),
+    url(/fonts/SF-Pro-Display-Semibold.otf) format('otf');
+}
+
+@font-face {
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 300;
+  font-display: swap;
+  src: url(/fonts/Roboto-Light.ttf) format('ttf');
+}
+
+@font-face {
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url(/fonts/Roboto-Regular.ttf) format('ttf');
+}
+
+@font-face {
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url(/fonts/Roboto-Medium.ttf) format('ttf');
+}
+
+@font-face {
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url(/fonts/Roboto-Bold.ttf) format('ttf');
+}

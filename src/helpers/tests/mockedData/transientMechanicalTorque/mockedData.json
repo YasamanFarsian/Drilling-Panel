@@ -1,0 +1,23 @@
+{
+  "operationId": "1",
+  "lastUpdated": "0001-01-01T00:00:00",
+  "maxYdomain": 2355798.536680283,
+  "minYdomain": -10213.1820508146,
+  "mechanicalProfiles": [
+    {
+      "MD": 1,
+      "torque": 2,
+      "torsionalLimit": 3
+    },
+    {
+      "MD": 4,
+      "torque": 5,
+      "torsionalLimit": 6
+    }
+  ],
+  "lastCasingDepth": 1,
+  "bitDepth": 2,
+  "currentTime": "2023-04-27T04:01:48.7510141Z",
+  "measuredDataLastUpdate": "2023-04-27T04:01:48.7510141Z",
+  "isLive": false
+}

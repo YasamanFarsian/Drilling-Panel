@@ -1,0 +1,23 @@
+import React from 'react';
+
+type {{pascalCase name}}Type = {}; // provider value shape
+
+const {{pascalCase name}}Context = React.createContext<{{pascalCase name}}Type | undefined>(undefined);
+
+export const use{{pascalCase name}} = (): {{pascalCase name}}Type => {
+  const context = React.useContext({{pascalCase name}}Context);
+  if (context === undefined) {
+    throw new Error('use{{pascalCase name}} can not be used outside {{pascalCase name}}Provider');
+  }
+  return context;
+};
+
+type {{pascalCase name}}ProviderPropsType = {
+  children: React.ReactNode;
+};
+
+const {{pascalCase name}}Provider = ({ children }: {{pascalCase name}}ProviderPropsType): JSX.Element => {
+  return <{{pascalCase name}}Context.Provider value={0}>{children}</{{pascalCase name}}Context.Provider>;
+};
+
+export default {{pascalCase name}}Provider;

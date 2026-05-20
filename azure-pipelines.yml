@@ -1,0 +1,203 @@
+trigger:
+  branches:
+    include:
+      - main
+  paths:
+    include:
+      - 'apps/sekal-dt-advisory-web/*'
+      - 'packages/sekal-utilities/*'
+      - 'packages/advisory-widgets/*'
+
+pr:
+  branches:
+    include:
+      - '*'
+  paths:
+    include:
+      - 'apps/sekal-dt-advisory-web/*'
+      - 'packages/sekal-utilities/*'
+      - 'packages/advisory-widgets/*'
+
+# variables:
+#   #IsMasterOrHotfix: $[or(eq(variables['Build.SourceBranchName'], 'main'), startsWith(variables['Build.SourceBranch'], 'refs/heads/hotfix/'))]
+#   # DaWorkingDirectory: '$(Build.SourcesDirectory)/apps/drill-aware'
+#   AdvWorkingDirectory: '$(Build.SourcesDirectory)/apps/sekal-dt-advisory-web'
+#   SekalUtilitiesWorkingDirectory: '$(Build.SourcesDirectory)/packages/sekal-utilities'
+#   AdvWidgetsWorkingDirectory: '$(Build.SourcesDirectory)/packages/advisory-widgets'
+#   NpmConfigCache: $(Pipeline.Workspace)/$(AdvWorkingDirectory)/.npm
+
+variables:
+  - name: IsMasterOrHotfix
+    value: $[and(or(eq(variables['Build.SourceBranch'], 'refs/heads/main'),startsWith(variables['Build.SourceBranch'], 'refs/heads/hotfix/')),ne(variables['Build.Reason'], 'PullRequest') )]
+  - name: AdvWorkingDirectory
+    value: '$(Build.SourcesDirectory)/apps/sekal-dt-advisory-web'
+  - name: SekalUtilitiesWorkingDirectory
+    value: '$(Build.SourcesDirectory)/packages/sekal-utilities'
+  - name: AdvWidgetsWorkingDirectory
+    value: '$(Build.SourcesDirectory)/packages/advisory-widgets'
+  - name: NpmConfigCache
+    value: '$(Pipeline.Workspace)/$(Build.SourcesDirectory)/apps/sekal-dt-advisory-web/.npm'
+
+stages:
+  - stage: BuildDtAdvisoryWeb
+    displayName: 'Build and Test Sekal DT Advisory Web'
+    jobs:
+      - job: InitialSetupAndAudit
+        displayName: 'Initial Setup and Audit'
+        pool: 'AKS Agent SekalDev'
+        steps:
+          - task: NodeTool@0
+            displayName: 'Install Node.js'
+            inputs:
+              versionSpec: '20.x'
+
+          - script: |
+              npm install -g license-checker
+            displayName: 'Npm install'
+
+          - task: Cache@2
+            inputs:
+              key: 'npm | "$(Agent.OS)" | package-lock.json'
+              restoreKeys: |
+                npm | "$(Agent.OS)"
+                npm
+              path: $(NpmConfigCache)
+            displayName: 'Cache Npm'
+
+          - script: |
+              npm ci --legacy-peer-deps --cpu x64 --os linux --cache $(NpmConfigCache)
+            displayName: 'Npm install'
+            workingDirectory: $(AdvWorkingDirectory)
+
+          - script: |
+              npm audit --registry=https://registry.npmjs.org/ --audit-level=high
+            displayName: 'Npm Audit'
+            failOnStderr: 'true'
+            workingDirectory: $(AdvWorkingDirectory)
+
+          # License check - Turbo and ESLint packages are excluded as they are only used for development
+          # - script: |
+          #     license-checker --summary
+          #     license-checker --failOn "GPL;AGPL;LGPL;EPL;MPL;JRL;AFPL;CC BY-NC;CC BY-SA;FAL;CDDL-1.0;CDDL-1.1;CPL-1.0;EPL-1.0;EPL-2.0;ErlPL-1.1;IPL-1.0;MPL-1.0;MPL-1.1;MPL-2.0" --excludePackages "turbo@1.13.4;turbo-linux-64@1.13.4;eslint-plugin-turbo@1.13.4;eslint-config-turbo@1.13.4;axe-core@4.10.3;@vercel/style-guide@5.2.0;@turbo/workspaces@1.13.4;@turbo/gen@1.13.4" --summary
+          #   displayName: 'License check root'
+          #   failOnStderr: 'true'
+
+          - script: |
+              license-checker --summary
+              license-checker --failOn "GPL;AGPL;LGPL;EPL;MPL;JRL;AFPL;CC BY-NC;CC BY-SA;FAL;CDDL-1.0;CDDL-1.1;CPL-1.0;EPL-1.0;EPL-2.0;ErlPL-1.1;IPL-1.0;MPL-1.0;MPL-1.1;MPL-2.0"
+            workingDirectory: '$(AdvWorkingDirectory)'
+            displayName: 'License check ADV'
+            failOnStderr: 'true'
+
+          # - script: |
+          #     license-checker --summary
+          #     license-checker --failOn "GPL;AGPL;LGPL;EPL;MPL;JRL;AFPL;CC BY-NC;CC BY-SA;FAL;CDDL-1.0;CDDL-1.1;CPL-1.0;EPL-1.0;EPL-2.0;ErlPL-1.1;IPL-1.0;MPL-1.0;MPL-1.1;MPL-2.0"
+          #   workingDirectory: '$(SekalUtilitiesWorkingDirectory)'
+          #   displayName: 'License check Sekal Utilities'
+          #   failOnStderr: 'true'
+
+          - script: |
+              license-checker --summary
+              license-checker --failOn "GPL;AGPL;LGPL;EPL;MPL;JRL;AFPL;CC BY-NC;CC BY-SA;FAL;CDDL-1.0;CDDL-1.1;CPL-1.0;EPL-1.0;EPL-2.0;ErlPL-1.1;IPL-1.0;MPL-1.0;MPL-1.1;MPL-2.0"
+            workingDirectory: '$(AdvWidgetsWorkingDirectory)'
+            displayName: 'License check Adv Widgets'
+            failOnStderr: 'true'
+
+          # Run security scan
+          - task: WhiteSource@21
+            displayName: 'Dependency Security Check'
+            inputs:
+              cwd: '$(System.DefaultWorkingDirectory)'
+
+      - job: TestAndCoverage
+        displayName: 'Test and Coverage'
+        pool: 'AKS Agent SekalDev'
+        dependsOn: InitialSetupAndAudit
+        steps:
+          - task: Cache@2
+            inputs:
+              key: 'npm | "$(Agent.OS)" | package-lock.json'
+              restoreKeys: |
+                npm | "$(Agent.OS)"
+                npm
+              path: $(NpmConfigCache)
+            displayName: 'Cache Npm'
+
+          - script: |
+              npm ci --legacy-peer-deps --cpu x64 --os linux --cache $(NpmConfigCache)
+            displayName: 'Npm install'
+            workingDirectory: $(AdvWorkingDirectory)
+
+          - script: |
+              npm run test-ci
+            displayName: 'Test ADV'
+            workingDirectory: $(AdvWorkingDirectory)
+
+          - task: PublishTestResults@2
+            displayName: 'Publish Test Results'
+            inputs:
+              testResultsFiles: 'junit.xml'
+              mergeTestResults: true
+              testRunTitle: 'Jest Unit Tests'
+              failTaskOnFailedTests: true
+
+          - task: UseDotNet@2 # To publish code coverage from Jest tests
+            displayName: 'Use .NET Core sdk 7.0.x'
+            inputs:
+              version: 7.0.x
+
+      #          - task: PublishCodeCoverageResults@2
+      #            displayName: 'Publish code coverage from Jest tests'
+      #            inputs:
+      #              summaryFileLocation: '$(System.DefaultWorkingDirectory)/**/coverage/cobertura-coverage.xml'
+      #              failIfCoverageEmpty: true
+
+      - job: BuildAndPublish
+        displayName: 'Build and Publish'
+        pool: 'AKS Agent SekalDev'
+        dependsOn: TestAndCoverage
+        steps:
+          - task: Cache@2
+            inputs:
+              key: 'npm | "$(Agent.OS)" | package-lock.json'
+              restoreKeys: |
+                npm | "$(Agent.OS)"
+                npm
+              path: $(NpmConfigCache)
+            displayName: 'Cache Npm'
+
+          - script: |
+              npm ci --legacy-peer-deps --cpu x64 --os linux --cache $(NpmConfigCache)
+            displayName: 'Npm install'
+            workingDirectory: $(AdvWorkingDirectory)
+
+          - script: |
+              echo "VITE_BUILD_NUMBER=$(Build.BuildNumber)" > .env.production
+            displayName: 'Assign build number to react environment'
+            workingDirectory: '$(AdvWorkingDirectory)'
+
+          # - script: |
+          #     npx turbo run build --filter=@repo/sekal-utilities
+          #   displayName: 'Build sekal utilities'
+
+          - script: |
+              npm run build
+            displayName: 'Build app'
+            workingDirectory: $(AdvWorkingDirectory)
+
+          - task: ArchiveFiles@2
+            condition: and(succeeded(), eq(variables['IsMasterOrHotfix'], 'true'))
+            inputs:
+              rootFolderOrFile: '$(AdvWorkingDirectory)/build'
+              includeRootFolder: false
+              archiveType: 'zip'
+              archiveFile: '$(Build.ArtifactStagingDirectory)/build.zip'
+              replaceExistingArchive: true
+
+            # Publish Artifact
+          - task: PublishBuildArtifacts@1
+            condition: and(succeeded(), eq(variables['IsMasterOrHotfix'], 'true'))
+            inputs:
+              PathtoPublish: '$(Build.ArtifactStagingDirectory)/build.zip'
+              ArtifactName: 'web'
+              publishLocation: 'Container'

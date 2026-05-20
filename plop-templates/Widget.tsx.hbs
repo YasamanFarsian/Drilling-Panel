@@ -1,0 +1,76 @@
+import React from 'react';
+import ErrorBoundaryProvider from '@dt-advisory/providers/ErrorBoundary';
+import { useAxisLabelToggleStore } from '@dt-advisory/store/AxisLabelToggle';
+import { FormattedMessage } from 'react-intl';
+import { WidgetsEnum } from '@dt-advisory/store/UserConfiguration/UserConfiguration';
+import { WidgetsLoaderEnum } from '@dt-advisory/store/UserConfiguration/UserConfiguration.types';
+import BaseWidget from '@dt-advisory/widgets/components/BaseWidget';
+import Loading from '@dt-advisory/widgets/components/Loading';
+import { get{{pascalCase name}}SafeData } from './helpers/{{camelCase name}}Helper';
+import { baseWidgetStyle, containerStyle } from './{{pascalCase name}}.style';
+import { {{pascalCase name}}Type } from './{{pascalCase name}}Types'
+import { ADVWidgetType } from '../helpers/types';
+import {{pascalCase name}}Chart from './components/{{pascalCase name}}Chart/{{pascalCase name}}Chart'
+
+
+/**
+* /!\IMPORTANT/!\: Please update `WidgetsEnum` and `WidgetsLoaderEnum` before you continue
+*/
+
+export type {{pascalCase name}}PropsType = Record<string, never>;
+
+const {{pascalCase name}} = ({
+  isSmallVersion,
+  useHostDataProvider,
+}: ADVWidgetType): JSX.Element => {
+  const { isConnected, data } = useHostDataProvider<{{pascalCase name}}Type>();
+  const isShowGraph = Boolean(isConnected && data);
+  const hideAxisLabel = useAxisLabelToggleStore((x) => x.hideAxisLabel.{{pascalCase name}});
+
+  return (
+    <BaseWidget
+      name={ WidgetsLoaderEnum.{{pascalCase name}} }
+      css={baseWidgetStyle}
+      title={<FormattedMessage
+        id="widget.{{lowerCase name}}.title" 
+        defaultMessage="{{lowerCase name}}"
+      />}
+      label={ WidgetsEnum.{{pascalCase name}} }
+      //axisLabelToggle="{{pascalCase name}}"
+      //dropdown="{{pascalCase name}}"
+      hideLabel={hideAxisLabel}
+    >
+      <div 
+        data-testid={`container_${ WidgetsLoaderEnum.{{pascalCase name}} }`}
+        css={containerStyle(!isShowGraph)}
+      >
+
+        {!isShowGraph ? (
+          <Loading />
+        ) : (
+          <{{pascalCase name}}Chart 
+            data={data}
+            isSmallVersion={isSmallVersion}
+          />
+        )}
+      </div>
+    </BaseWidget>
+  ); 
+};
+
+const WrappedProvider{{pascalCase name}} = (props: ADVWidgetType) => {
+  const { HostDataProvider } = props;
+  return (
+    <ErrorBoundaryProvider forComponent>
+      <HostDataProvider
+        widgetType={ WidgetsEnum.{{ pascalCase name }} }
+        checkSafeData={get{{pascalCase name}}SafeData}
+        {...props}
+      >
+        <{{pascalCase name}} {...props} />
+      </HostDataProvider>
+    </ErrorBoundaryProvider>
+  );
+};
+
+export default WrappedProvider{{pascalCase name}};

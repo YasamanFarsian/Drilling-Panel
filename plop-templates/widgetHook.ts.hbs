@@ -1,0 +1,24 @@
+import { useNoStreamingTimer } from '@/widgets/hooks/useNoStreamingTimer';
+import { useDataProvider } from '@/widgets/providers/DataProvider';
+import { WidgetsEnum } from '@/store/UserConfiguration/UserConfiguration';
+import { {{pascalCase name}}Type } from '../{{pascalCase name}}Types';
+
+/**
+* /!\IMPORTANT/!\: Please update `WidgetsEnum` before you continue
+*/
+
+export const use{{pascalCase name}} = () => {
+  const { isConnected, data } = useDataProvider<{{pascalCase name}}Type>();
+  const timer = useNoStreamingTimer({
+    data,
+    type: WidgetsEnum.{{pascalCase name}},
+    keys: ['TODO'],
+  });  
+  const isShowGraph = Boolean(isConnected && data);
+
+  return {
+    isShowGraph,
+    data,
+    timer
+  }
+}

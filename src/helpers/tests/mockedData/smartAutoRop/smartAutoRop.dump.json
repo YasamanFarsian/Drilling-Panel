@@ -1,0 +1,23 @@
+{
+  "operationId": "101",
+  "lastUpdated": "2023-05-11T07:54:38.2849017Z",
+  "ropActual": 30,
+  "ropTarget": 30,
+  "minRop": 0,
+  "maxRop": 60,
+  "rpmActual": 100,
+  "rpmTarget": 80,
+  "minRpm": 0,
+  "maxRpm": 160,
+  "wobActual": 5.034,
+  "wobTarget": 10,
+  "minWob": 0,
+  "maxWob": 20,
+  "flowRateActual": 5525.9123,
+  "flowRateTarget": 4550,
+  "minFlowRate": 0,
+  "maxFlowRate": 9100,
+  "currentTime": "2023-05-11T07:54:38.2849288Z",
+  "active": true,
+  "isLive": false
+}

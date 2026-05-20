@@ -1,0 +1,397 @@
+{
+  "operationId": "101",
+  "lastUpdated": "2023-04-26T12:09:07.6507822Z",
+  "lastCasingDepth": 309,
+  "bitDepth": 565.028201773453,
+  "maxYdomain": 11155798.536680283,
+  "minYdomain": -202159.1820508146,
+  "mechanicalProfiles": [
+    {
+      "MD": 0.933160316569641,
+      "tension": 23743.7354978055,
+      "bucklingLimit": 0,
+      "tensileLimit": 276058.41178464
+    },
+    {
+      "MD": 10.7752059739461,
+      "tension": 23296.612160178203,
+      "bucklingLimit": 0,
+      "tensileLimit": 276058.41178464
+    },
+    {
+      "MD": 20.6171794664207,
+      "tension": 22810.375942134702,
+      "bucklingLimit": 0,
+      "tensileLimit": 276058.41178464
+    },
+    {
+      "MD": 30.4590732541202,
+      "tension": 22345.129646465102,
+      "bucklingLimit": 0,
+      "tensileLimit": 276058.41178464
+    },
+    {
+      "MD": 40.3008781665903,
+      "tension": 21432.202217952203,
+      "bucklingLimit": 0,
+      "tensileLimit": 276058.41178464
+    },
+    {
+      "MD": 50.1426562165119,
+      "tension": 20958.7918817013,
+      "bucklingLimit": 0,
+      "tensileLimit": 276058.41178464
+    },
+    {
+      "MD": 59.9843441521001,
+      "tension": 20452.16615426,
+      "bucklingLimit": 0,
+      "tensileLimit": 276058.41178464
+    },
+    {
+      "MD": 69.8259504692372,
+      "tension": 19935.406824857,
+      "bucklingLimit": 0,
+      "tensileLimit": 276058.41178464
+    },
+    {
+      "MD": 79.6674784282909,
+      "tension": 19408.8510952768,
+      "bucklingLimit": 0,
+      "tensileLimit": 276058.41178464
+    },
+    {
+      "MD": 89.5089308598621,
+      "tension": 18870.404868925598,
+      "bucklingLimit": 0,
+      "tensileLimit": 276058.41178464
+    },
+    {
+      "MD": 99.3502564329916,
+      "tension": 18320.6283831393,
+      "bucklingLimit": 0,
+      "tensileLimit": 276058.41178464
+    },
+    {
+      "MD": 109.191508257648,
+      "tension": 17774.5161995765,
+      "bucklingLimit": 0,
+      "tensileLimit": 276058.41178464
+    },
+    {
+      "MD": 119.032683144441,
+      "tension": 17208.3753322613,
+      "bucklingLimit": 0,
+      "tensileLimit": 276058.41178464
+    },
+    {
+      "MD": 128.873781617146,
+      "tension": 16652.395687977,
+      "bucklingLimit": 0,
+      "tensileLimit": 276058.41178464
+    },
+    {
+      "MD": 138.714800192536,
+      "tension": 16083.256068637602,
+      "bucklingLimit": 0,
+      "tensileLimit": 276058.41178464
+    },
+    {
+      "MD": 148.555739008709,
+      "tension": 15515.2670867213,
+      "bucklingLimit": 0,
+      "tensileLimit": 276058.41178464
+    },
+    {
+      "MD": 158.396596423069,
+      "tension": 14944.2799248314,
+      "bucklingLimit": 0,
+      "tensileLimit": 276058.41178464
+    },
+    {
+      "MD": 168.237371659575,
+      "tension": 14373.3244601638,
+      "bucklingLimit": 0,
+      "tensileLimit": 276058.41178464
+    },
+    {
+      "MD": 178.078063779521,
+      "tension": 13812.372970868002,
+      "bucklingLimit": 0,
+      "tensileLimit": 276058.41178464
+    },
+    {
+      "MD": 187.918673983066,
+      "tension": 13236.873015954901,
+      "bucklingLimit": 0,
+      "tensileLimit": 276058.41178464
+    },
+    {
+      "MD": 197.759200595765,
+      "tension": 12672.1097952684,
+      "bucklingLimit": 0,
+      "tensileLimit": 276058.41178464
+    },
+    {
+      "MD": 207.599641828217,
+      "tension": 12097.1615625639,
+      "bucklingLimit": 0,
+      "tensileLimit": 276058.41178464
+    },
+    {
+      "MD": 217.439999059734,
+      "tension": 11532.544913959202,
+      "bucklingLimit": 0,
+      "tensileLimit": 276058.41178464
+    },
+    {
+      "MD": 227.28027099973,
+      "tension": 10967.055603660201,
+      "bucklingLimit": 0,
+      "tensileLimit": 276058.41178464
+    },
+    {
+      "MD": 237.120458112759,
+      "tension": 10409.428559098102,
+      "bucklingLimit": 0,
+      "tensileLimit": 276058.41178464
+    },
+    {
+      "MD": 246.960559652836,
+      "tension": 9842.81191132023,
+      "bucklingLimit": 0,
+      "tensileLimit": 276058.41178464
+    },
+    {
+      "MD": 256.800577670759,
+      "tension": 9300.7011995346,
+      "bucklingLimit": 0,
+      "tensileLimit": 276058.41178464
+    },
+    {
+      "MD": 266.640509607011,
+      "tension": 8747.719571009211,
+      "bucklingLimit": 0,
+      "tensileLimit": 276058.41178464
+    },
+    {
+      "MD": 276.480358222603,
+      "tension": 8205.9916176289,
+      "bucklingLimit": 0,
+      "tensileLimit": 276058.41178464
+    },
+    {
+      "MD": 286.320123095203,
+      "tension": 7670.816797807691,
+      "bucklingLimit": 0,
+      "tensileLimit": 276058.41178464
+    },
+    {
+      "MD": 296.15980472887,
+      "tension": 7145.465901820231,
+      "bucklingLimit": 0,
+      "tensileLimit": 276058.41178464
+    },
+    {
+      "MD": 305.999403126986,
+      "tension": 6616.529540179879,
+      "bucklingLimit": 0,
+      "tensileLimit": 276058.41178464
+    },
+    {
+      "MD": 315.838920495873,
+      "tension": 6108.9974052794405,
+      "bucklingLimit": 0,
+      "tensileLimit": 276058.41178464
+    },
+    {
+      "MD": 325.678355946281,
+      "tension": 5599.43775659728,
+      "bucklingLimit": 0,
+      "tensileLimit": 276058.41178464
+    },
+    {
+      "MD": 335.517712192407,
+      "tension": 5107.31070512202,
+      "bucklingLimit": 0,
+      "tensileLimit": 276058.41178464
+    },
+    {
+      "MD": 345.356988662661,
+      "tension": 4616.06912606982,
+      "bucklingLimit": 0,
+      "tensileLimit": 276058.41178464
+    },
+    {
+      "MD": 355.196188313458,
+      "tension": 4143.80891339577,
+      "bucklingLimit": 0,
+      "tensileLimit": 276058.41178464
+    },
+    {
+      "MD": 365.035310899486,
+      "tension": 3671.42939620627,
+      "bucklingLimit": 0,
+      "tensileLimit": 276058.41178464
+    },
+    {
+      "MD": 374.874358518961,
+      "tension": 3211.0466715083903,
+      "bucklingLimit": 0,
+      "tensileLimit": 276058.41178464
+    },
+    {
+      "MD": 384.71333169321,
+      "tension": 2759.05693597863,
+      "bucklingLimit": 0,
+      "tensileLimit": 276058.41178464
+    },
+    {
+      "MD": 394.552231441466,
+      "tension": 2313.4081549042103,
+      "bucklingLimit": 0,
+      "tensileLimit": 276058.41178464
+    },
+    {
+      "MD": 404.391059123687,
+      "tension": 1876.1747862299399,
+      "bucklingLimit": 0,
+      "tensileLimit": 276058.41178464
+    },
+    {
+      "MD": 414.229815940869,
+      "tension": 1452.17900603364,
+      "bucklingLimit": 0,
+      "tensileLimit": 276058.41178464
+    },
+    {
+      "MD": 424.06850228975,
+      "tension": 1025.7619899769002,
+      "bucklingLimit": 0,
+      "tensileLimit": 276058.41178464
+    },
+    {
+      "MD": 433.907120845011,
+      "tension": 618.441319052298,
+      "bucklingLimit": 0,
+      "tensileLimit": 276058.41178464
+    },
+    {
+      "MD": 443.745671260191,
+      "tension": 212.960381656039,
+      "bucklingLimit": 0,
+      "tensileLimit": 276058.41178464
+    },
+    {
+      "MD": 453.584155797368,
+      "tension": -178.224529202419,
+      "bucklingLimit": 0,
+      "tensileLimit": 276058.41178464
+    },
+    {
+      "MD": 463.42257487483,
+      "tension": -560.984383537615,
+      "bucklingLimit": 0,
+      "tensileLimit": 276058.41178464
+    },
+    {
+      "MD": 471.691179086899,
+      "tension": -1771.81575841388,
+      "bucklingLimit": 0,
+      "tensileLimit": 597409.95036696
+    },
+    {
+      "MD": 479.959714807927,
+      "tension": -2350.65679662521,
+      "bucklingLimit": 0,
+      "tensileLimit": 597409.95036696
+    },
+    {
+      "MD": 488.228216604304,
+      "tension": -2921.3411701582404,
+      "bucklingLimit": 0,
+      "tensileLimit": 597409.95036696
+    },
+    {
+      "MD": 496.496684828129,
+      "tension": -3485.2293094255906,
+      "bucklingLimit": 0,
+      "tensileLimit": 597409.95036696
+    },
+    {
+      "MD": 504.765119881625,
+      "tension": -4041.60481278144,
+      "bucklingLimit": 0,
+      "tensileLimit": 597409.95036696
+    },
+    {
+      "MD": 513.033522101478,
+      "tension": -4599.32548453283,
+      "bucklingLimit": 0,
+      "tensileLimit": 597409.95036696
+    },
+    {
+      "MD": 521.301891612005,
+      "tension": -5149.412144055451,
+      "bucklingLimit": 0,
+      "tensileLimit": 597409.95036696
+    },
+    {
+      "MD": 526.926831401523,
+      "tension": -7825.80933078649,
+      "bucklingLimit": 0,
+      "tensileLimit": 939435.6662467611
+    },
+    {
+      "MD": 532.551732890324,
+      "tension": -8448.94229379715,
+      "bucklingLimit": 0,
+      "tensileLimit": 939435.6662467611
+    },
+    {
+      "MD": 538.726418681702,
+      "tension": -6763.405351060381,
+      "bucklingLimit": 0,
+      "tensileLimit": 597409.95036696
+    },
+    {
+      "MD": 544.901171814588,
+      "tension": -7162.041909036459,
+      "bucklingLimit": 0,
+      "tensileLimit": 597409.95036696
+    },
+    {
+      "MD": 549.901090749566,
+      "tension": -9323.589438045641,
+      "bucklingLimit": 0,
+      "tensileLimit": 1062981.2421464
+    },
+    {
+      "MD": 554.900991875094,
+      "tension": -10956.2694493706,
+      "bucklingLimit": 0,
+      "tensileLimit": 1078985.08324891
+    },
+    {
+      "MD": 585.010321991833,
+      "tension": -15635.771836421902,
+      "bucklingLimit": 0,
+      "tensileLimit": 823692.599368569
+    },
+    {
+      "MD": 590.010157289947,
+      "tension": -16099.2282146077,
+      "bucklingLimit": 0,
+      "tensileLimit": 954114.3485318661
+    },
+    {
+      "MD": 595.010018403427,
+      "tension": -20485.139418224004,
+      "bucklingLimit": 0,
+      "tensileLimit": 1115579.8536680301
+    }
+  ],
+  "currentTime": "2023-04-26T12:09:07.7534637Z",
+  "measuredDataLastUpdate": "2023-04-26T12:09:07.7534637Z",
+  "isLive": false
+}

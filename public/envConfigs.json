@@ -1,0 +1,254 @@
+{
+  "baseApiUrl": "https://adv-api.sekd.cloudplatform.sekal.com",
+  "anaApiUrl": "https://ana-api.sekd.cloudplatform.sekal.com",
+  "disableAuthentication": false,
+  "operationSelectEnabled": true,
+  "enableTooltips": true,
+  "launcher": {
+    "firstReloadTimer": 30,
+    "subsequentReloadTimer": 300
+  },
+  "msal": {
+    "sekal": {
+      "clientId": "f30bf96a-f91d-436a-9d92-3dea2a998a48",
+      "redirectUri": "http://localhost:8080",
+      "authority": "https://login.microsoftonline.com/c826dbf3-08af-4898-9ac2-634683081283",
+      "knownAuthorities": "",
+      "scopes": "f30bf96a-f91d-436a-9d92-3dea2a998a48/SekalAccess"
+    },
+    "customer": {
+      "clientId": "56a949d5-2954-4f3b-92c6-d8ab4e8151ba",
+      "redirectUri": "http://localhost:8080",
+      "authority": "https://login.microsoftonline.com/organizations",
+      "knownAuthorities": "",
+      "scopes": "56a949d5-2954-4f3b-92c6-d8ab4e8151ba/PortalAccess"
+    }
+  },
+  "telemetry": {
+    "connectionString": "InstrumentationKey=50104c76-218e-433c-9a48-d1f115d580fc;IngestionEndpoint=https://norwayeast-0.in.applicationinsights.azure.com/;LiveEndpoint=https://norwayeast.livediagnostics.monitor.azure.com/;ApplicationId=0ac289ea-7b9f-4dfe-b250-d5f257082225",
+    "disableFetchTracking": true,
+    "loggingLevelTelemetry": 2,
+    "enableAutoRouteTracking": false
+  },
+  "userConfiguration": {
+    "availableHeaderProperties": ["rigName", "wellName", "section", "mpdStatus"],
+    "headerConfig": ["rigName", "wellName", "section", "mpdStatus"],
+    "gridConfig": [
+      [0, 1, 2],
+      [0, 1, 2]
+    ],
+    "widgetConfig": [
+      {
+        "key": "RoadmapDrag"
+      },
+      {
+        "key": "Ecd"
+      }
+    ],
+    "layouts": [
+      {
+        "id": "1",
+        "name": "DTA Tripping",
+        "isEditable": false,
+        "gridConfig": [
+          [0, 1, 2],
+          [0, 1, 2]
+        ],
+        "widgetConfig": [
+          {
+            "key": "RoadmapDrag"
+          },
+          {
+            "key": "Ecd"
+          }
+        ]
+      },
+      {
+        "id": "2",
+        "name": "DTA Drilling",
+        "isEditable": false,
+        "gridConfig": [
+          [0, 1, 2],
+          [0, 1, 2]
+        ],
+        "widgetConfig": [
+          {
+            "key": "Wellbore"
+          },
+          {
+            "key": "Ecd"
+          }
+        ]
+      },
+      {
+        "id": "3",
+        "name": "DT Advisory 2",
+        "isEditable": false,
+        "gridConfig": [
+          [0, 1, 2],
+          [0, 1, 3]
+        ],
+        "widgetConfig": [
+          {
+            "key": "Wellbore"
+          },
+          {
+            "key": "Cutting"
+          },
+          {
+            "key": "Ecd"
+          }
+        ]
+      },
+      {
+        "id": "4",
+        "name": "DT Advisory 3",
+        "isEditable": false,
+        "gridConfig": [
+          [0, 1, 2],
+          [0, 3, 4]
+        ],
+        "widgetConfig": [
+          {
+            "key": "Cutting"
+          },
+          {
+            "key": "Wellbore"
+          },
+          {
+            "key": "Ecd"
+          },
+          {
+            "key": "TransientMechanicalDrag"
+          }
+        ]
+      },
+      {
+        "id": "5",
+        "name": "DT Advisory 4",
+        "isEditable": false,
+        "gridConfig": [
+          [0, 1, 2],
+          [3, 4, 5]
+        ],
+        "widgetConfig": [
+          {
+            "key": "Cutting"
+          },
+          {
+            "key": "Wellbore"
+          },
+          {
+            "key": "TransientMechanicalTorque"
+          },
+          {
+            "key": "Ecd"
+          },
+          {
+            "key": "TransientMechanicalDrag"
+          },
+          {
+            "key": "RoadmapDrag"
+          }
+        ]
+      }
+    ],
+    "widgetCatalog": [
+      {
+        "key": "Cutting",
+        "widgetConfig": {
+          "hasSmallVersion": true,
+          "hasLargeVersion": true,
+          "noConnectionTimerLimit": 5
+        }
+      },
+      {
+        "key": "Ecd",
+        "widgetConfig": {
+          "hasSmallVersion": true,
+          "hasLargeVersion": true,
+          "noConnectionTimerLimit": 5
+        }
+      },
+      {
+        "key": "Wellbore",
+        "widgetConfig": {
+          "hasSmallVersion": true,
+          "hasLargeVersion": true,
+          "noConnectionTimerLimit": 5
+        }
+      },
+      {
+        "key": "TransientMechanicalDrag",
+        "widgetConfig": {
+          "hasSmallVersion": true,
+          "hasLargeVersion": true,
+          "noConnectionTimerLimit": 5
+        }
+      },
+      {
+        "key": "TransientMechanicalTorque",
+        "widgetConfig": {
+          "hasSmallVersion": true,
+          "hasLargeVersion": true,
+          "noConnectionTimerLimit": 5
+        }
+      },
+      {
+        "key": "SmartAutoRop",
+        "widgetConfig": {
+          "hasSmallVersion": true,
+          "hasLargeVersion": true,
+          "noConnectionTimerLimit": 5
+        }
+      },
+      {
+        "key": "SekalHalliburtonLimit",
+        "widgetConfig": {
+          "hasSmallVersion": true,
+          "hasLargeVersion": false,
+          "noConnectionTimerLimit": 5
+        }
+      },
+      {
+        "key": "Drillability",
+        "widgetConfig": {
+          "hasSmallVersion": false,
+          "hasLargeVersion": true,
+          "noConnectionTimerLimit": 5
+        }
+      },
+      {
+        "key": "RoadmapDrag",
+        "widgetConfig": {
+          "hasSmallVersion": true,
+          "hasLargeVersion": true,
+          "noConnectionTimerLimit": 5
+        }
+      },
+      {
+        "key": "RoadmapTorque",
+        "widgetConfig": {
+          "hasSmallVersion": true,
+          "hasLargeVersion": true,
+          "noConnectionTimerLimit": 5
+        }
+      }
+    ],
+    "unitConfig": {
+      "gmtTimeZone": 7,
+      "clockIn24h": false,
+      "temparatureUnit": "celcius",
+      "useImperialForDistance": false,
+      "useImperialForWeight": false
+    },
+    "appearance": {
+      "mode": "Auto"
+    },
+    "warnings": {
+      "snoozeFor": 120
+    }
+  },
+  "zoomEcdX": 0.1,
+  "zoomEcdY": 0.05
+}

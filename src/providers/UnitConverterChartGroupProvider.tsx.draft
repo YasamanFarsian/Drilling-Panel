@@ -1,0 +1,56 @@
+/*import {
+  createContext,
+  PropsWithChildren,
+  useContext,
+  useState,
+  useEffect,
+  useCallback,
+} from "react";
+import { SafeguardMessage } from "../components/SafeguardWidget/useSafeguardStream";
+import { ECDStream } from "../components/EcdWidget/useEcdStream";
+import { CuttingChartStreamMessage } from "../components/CuttingChartWidget/useCuttingChartStream";
+import { useSettingsStore } from "../store/Settings";
+import { convert } from "convert";
+import { WStype } from "./ReconnectingChartGroupProvider";
+
+enum Temperature {
+  fahrenheit = "fahrenheit",
+  celcius = "celcius",
+}
+
+enum System {
+  metric = "metric",
+  imperial = "imperial",
+}
+
+type UnitConverterChartGroupContextValue = {
+  convertSafeguardData(data: SafeguardMessage): SafeguardMessage;
+  convertECDData(data: ECDStream): ECDStream;
+  convertCuttingsData(
+    data: CuttingChartStreamMessage
+  ): CuttingChartStreamMessage;
+};
+
+const UnitConverterChartGroupContext =
+  createContext<UnitConverterChartGroupContextValue | null>(null);
+UnitConverterChartGroupContext.displayName = "UnitConverterChartGroupContext";
+
+export function UnitConverterChartGroupProvider({
+  children,
+  enable = true,
+}: PropsWithChildren<{ enable?: boolean }>) {
+  const { temperature, distance, weight } = useSettingsStore(
+    (state) => state.settings
+  );
+
+  return (
+    <UnitConverterChartGroupContext.Provider value={null}>
+      {children}
+    </UnitConverterChartGroupContext.Provider>
+  );
+}
+
+export function useUnitConverterChartGroup() {
+  return useContext(UnitConverterChartGroupContext)!;
+}
+*/
