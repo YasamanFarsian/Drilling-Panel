@@ -179,6 +179,7 @@
   "page.sign_in.auth_status.authenticating": "Authenticating...",
   "page.sign_in.auth_status.redirecting": "Redirecting...",
   "page.sign_in.cta.label": "Sign In",
+  "sekalUnit.Unknown": "Unknown",
   "sekalUnit.AmericanPetroleumInstitute": "API",
   "sekalUnit.Ampere": "A",
   "sekalUnit.Bar": "bar",

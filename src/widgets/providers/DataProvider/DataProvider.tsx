@@ -1,23 +1,16 @@
-/* eslint-disable @typescript-eslint/no-explicit-any, @typescript-eslint/no-unnecessary-type-constraint, max-lines-per-function, complexity, max-nested-callbacks */
-import { getConvertedData } from '@dt-advisory/helpers/units/unitsHelper';
-import { useSettingsStore } from '@dt-advisory/store/Settings';
-import { useSyncStateStore } from '@dt-advisory/store/SyncStateStore';
-import {
-  useUserConfigurationStore,
-  WidgetsEnum,
-} from '@dt-advisory/store/UserConfiguration/UserConfiguration';
-import { useWSConnectionStore } from '@dt-advisory/store/WsConnection';
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { WidgetsEnum } from '@dt-advisory/store/UserConfiguration/UserConfiguration';
 import { useWebSocket, UseWebSocketPropsType } from '@dt-advisory/widgets/hooks/useWebSocket';
 import React, { useEffect, useMemo, useState } from 'react';
-
-type DataProviderType<T> = {
-  data: T | null;
-  isConnected: boolean;
-}; // provider value shape
 
 export type DataHubType = {
   currentTime: string;
   isLive: boolean | null;
+};
+
+type DataProviderType<T> = {
+  data: T | null;
+  isConnected: boolean;
 };
 
 const DataProviderContext = React.createContext<DataProviderType<any> | undefined>(undefined);
@@ -40,51 +33,17 @@ const DataProvider = <T extends DataHubType>({
   widgetType,
   checkSafeData,
   children,
-  webSocketUrlFromHost,
-  getTokenFormHost,
 }: DataProviderPropsType<T>): JSX.Element => {
-  const shouldReconnect = useWSConnectionStore((x) => x.shouldReconnect);
-  const operationId = useSettingsStore((x) => x.settings.operationId);
-  const [currentOpId, setCurrentOpId] = useState('');
-  const { ws, isConnected } = useWebSocket({
-    path: widgetType,
-    webSocketUrlFromHost,
-    getTokenFormHost,
-  });
+  const { ws, isConnected } = useWebSocket({ path: widgetType });
   const [data, setData] = useState<T | null>(null);
-  const isSettingsModalOpen = useUserConfigurationStore((x) => x.isSettingsModalOpen);
-  const setSyncState = useSyncStateStore((x) => x.setSyncStates);
-  const removeSyncState = useSyncStateStore((x) => x.removeSyncState);
-  const [hasAddedOp, setHasAddedOp] = useState(false);
 
   useEffect(() => {
-    if (currentOpId !== operationId) {
-      setHasAddedOp(false);
-      setCurrentOpId(operationId);
-    }
-  }, [currentOpId, operationId]);
-
-  useEffect(() => {
-    setData(null);
-    if (shouldReconnect) {
-      setData(null);
-      setHasAddedOp(false);
-    }
     ws?.on(widgetType, (message: any) => {
-      if (!isSettingsModalOpen) {
-        const safeData = checkSafeData(JSON.parse(message));
-        const convertedData = getConvertedData(widgetType, safeData);
-        setSyncState({ [widgetType]: convertedData.isLive });
-        setData(convertedData as T);
-      }
+      const parsed = typeof message === 'string' ? JSON.parse(message) : message;
+      setData(checkSafeData(parsed));
     });
-
-    return () => {
-      ws?.off(widgetType);
-      removeSyncState(widgetType);
-    };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [ws, isSettingsModalOpen, hasAddedOp, shouldReconnect]);
+    return () => ws?.off(widgetType);
+  }, [ws, widgetType, checkSafeData]);
 
   const value = useMemo(() => ({ data, isConnected }), [data, isConnected]);
 
