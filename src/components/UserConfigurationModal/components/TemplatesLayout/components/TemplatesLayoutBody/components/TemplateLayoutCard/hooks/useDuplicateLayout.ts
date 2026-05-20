@@ -1,57 +1,29 @@
-import { useState } from 'react';
-import { useIntl } from 'react-intl';
-import { useMutation } from 'react-query';
-import { userConfigurationSettingsKeys } from '@dt-advisory/api/queryKeysFactories/userConfigurationSettingsKeys';
-import { createLayout } from '@dt-advisory/api/settings/settings.query';
 import { useUserConfigurationStore } from '@dt-advisory/store/UserConfiguration/UserConfiguration';
+import { useState } from 'react';
 
-// eslint-disable-next-line max-lines-per-function
 export const useDuplicateLayout = (templateId: string) => {
-  const { formatMessage } = useIntl();
   const [openDuplicateDialog, setOpenDuplicateDialog] = useState(false);
-  const getDuplicateTemplateById = useUserConfigurationStore(
-    (state) => state.getDuplicateTemplateById,
-  );
-
-  const getTemplateById = useUserConfigurationStore((state) => state.getTemplateById);
-
-  const appendTemplate = useUserConfigurationStore((state) => state.appendTemplate);
-
-  const newLayout = useMutation({
-    mutationKey: userConfigurationSettingsKeys.createLayout(),
-    mutationFn: createLayout,
-  });
-
-  const handleOpenDuplicateDialog = () => setOpenDuplicateDialog(true);
-  const handleCloseDuplicateDialog = () => setOpenDuplicateDialog(false);
+  const getDuplicateTemplateById = useUserConfigurationStore((s) => s.getDuplicateTemplateById);
+  const getTemplateById = useUserConfigurationStore((s) => s.getTemplateById);
+  const appendTemplate = useUserConfigurationStore((s) => s.appendTemplate);
 
   const templateById = getTemplateById(templateId);
-
   const newNameAsDuplicateTemplate = `${templateById?.name} (Copy)`;
 
-  const handleDuplicateLayout = async (templateName: string) => {
+  const handleDuplicateLayout = (templateName: string) => {
     const duplicateTemplate = getDuplicateTemplateById(templateId, templateName);
     if (!duplicateTemplate) return;
-
-    try {
-      const apiId = await newLayout.mutateAsync(duplicateTemplate);
-      appendTemplate(duplicateTemplate, apiId);
-    } catch {
-      appendTemplate(duplicateTemplate);
-    } finally {
-      handleCloseDuplicateDialog();
-    }
+    appendTemplate(duplicateTemplate);
+    setOpenDuplicateDialog(false);
   };
 
   return {
-    isDuplicating: newLayout.isLoading,
+    isDuplicating: false,
     openDuplicateDialog,
-    handleOpenDuplicateDialog,
-    handleCloseDuplicateDialog,
+    handleOpenDuplicateDialog: () => setOpenDuplicateDialog(true),
+    handleCloseDuplicateDialog: () => setOpenDuplicateDialog(false),
     handleDuplicateLayout,
     newNameAsDuplicateTemplate,
-    duplicateDialogTitleLabel: formatMessage({
-      id: 'userConfiguration.settings.templatesLayout.templateNameFormDialog.title.duplicateTemplate',
-    }),
+    duplicateDialogTitleLabel: 'Duplicate Template',
   };
 };

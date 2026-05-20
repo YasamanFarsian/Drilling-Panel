@@ -15,22 +15,18 @@ import { QueryClient, QueryClientProvider } from 'react-query';
 import { BrowserRouter, useRoutes } from 'react-router-dom';
 import './index.css';
 
-// ─── Locale (English only) ───────────────────────────────────────────────────
 type LocaleType = { locale: 'en' };
 const LocaleContext = createContext<LocaleType>({ locale: 'en' });
 export const useLocale = () => useContext(LocaleContext);
 
-// ─── Embedder ────────────────────────────────────────────────────────────────
 type EmbedderType = { isInIframe: boolean };
 const EmbedderContext = createContext<EmbedderType>({ isInIframe: false });
 export const useEmbedder = () => useContext(EmbedderContext);
 
-// ─── React Query client ──────────────────────────────────────────────────────
 const queryClient = new QueryClient({
   defaultOptions: { queries: { retry: 1, refetchOnWindowFocus: false } },
 });
 
-// ─── Routes ──────────────────────────────────────────────────────────────────
 const LazyDashboard = React.lazy(() => import('@dt-advisory/pages/DashboardPage'));
 const DashboardPage = () => (
   <React.Suspense fallback={<LoadingPage />}>
@@ -53,7 +49,6 @@ const AppRoutes = () =>
     { path: '*', element: <NotFoundPage /> },
   ]);
 
-// ─── Theme wrapper ───────────────────────────────────────────────────────────
 const ThemedApp = ({ children }: { children: React.ReactNode }) => {
   const [darkMode, setDarkMode] = useLocalStorage('darkMode', true);
   const theme = useMemo(
@@ -76,7 +71,6 @@ const ThemedApp = ({ children }: { children: React.ReactNode }) => {
   );
 };
 
-// ─── Root ────────────────────────────────────────────────────────────────────
 export default function App() {
   const isInIframe = useMemo(() => {
     try {

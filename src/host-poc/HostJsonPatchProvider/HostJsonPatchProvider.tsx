@@ -1,7 +1,8 @@
 /* eslint-disable */
-import { UnitsConfiguration } from '@dt-advisory/api/units/units.types';
-import { convertDataForRoadMap, setConfigResponse } from '@dt-advisory/helpers/units/unitsHelper';
+
+import { convertDataForRoadMap } from '@dt-advisory/helpers/units/unitsHelper';
 import { WidgetsEnum } from '@dt-advisory/store/UserConfiguration/UserConfiguration';
+import useReplayStore from '@dt-advisory/utils/replay-store/use-replay-store';
 import { useWebSocket, UseWebSocketPropsType } from '@dt-advisory/widgets/hooks/useWebSocket';
 import {
   BaseRoadmapPatchedType,
@@ -9,7 +10,6 @@ import {
   BaseRoadmapType,
 } from '@dt-advisory/widgets/providers/DataProviderWithJsonPatch/DataProviderWithJsonPatch.types';
 import { jsonPatchDefaultRoadmapDragValues } from '@dt-advisory/widgets/RoadmapDrag/RoadmapDragConstants';
-import useReplayStore from '@dt-advisory/utils/replay-store/use-replay-store';
 import { applyPatch } from 'fast-json-patch';
 import React, { useEffect, useMemo, useState } from 'react';
 import { HostProviderType } from '../HostJsonProvider';
@@ -40,7 +40,6 @@ type HostJsonPatchProviderProviderPropsType = {
   ) => BaseRoadmapReturnType | null;
   shouldReconnect?: boolean;
   hostOperationId?: string;
-  unitsSettings?: UnitsConfiguration;
 } & Pick<UseWebSocketPropsType, 'getTokenFormHost' | 'webSocketUrlFromHost'>;
 
 const HostJsonPatchProviderProvider = ({
@@ -51,7 +50,6 @@ const HostJsonPatchProviderProvider = ({
   webSocketUrlFromHost,
   getTokenFormHost,
   hostOperationId,
-  unitsSettings,
 }: HostJsonPatchProviderProviderPropsType): JSX.Element => {
   const { ws, isConnected } = useWebSocket({
     path: widgetType,
@@ -59,9 +57,7 @@ const HostJsonPatchProviderProvider = ({
     getTokenFormHost,
     hostOperationId,
   });
-  if (unitsSettings) {
-    setConfigResponse(unitsSettings);
-  }
+
   const [_, setSiData] = useState<BaseRoadmapPatchedType | null>(null);
   const [data, setData] = useState<BaseRoadmapReturnType | null>(null);
 

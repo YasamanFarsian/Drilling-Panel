@@ -1,11 +1,8 @@
-import AddRoundedIcon from '@mui/icons-material/AddRounded';
-import { Box, Button } from '@mui/material';
-import React from 'react';
+import { Box } from '@mui/material';
 import { FormattedMessage } from 'react-intl';
 import TemplateNameFormDialog from './components/TemplateNameFormDialog';
 import TemplatesLayoutBody from './components/TemplatesLayoutBody';
 import {
-  newTemplateButton,
   templateLayoutContainerStyle,
   templateLayoutHeaderLabelStyle,
   templateLayoutHeaderStyle,
@@ -30,16 +27,6 @@ const TemplatesLayout = (): JSX.Element => {
         <div css={templateLayoutHeaderLabelStyle}>
           <FormattedMessage id="userConfiguration.settings.templatesLayout.title" />
         </div>
-        <Button
-          data-testid="new_template_button"
-          css={newTemplateButton}
-          startIcon={<AddRoundedIcon />}
-          variant="contained"
-          color="secondary"
-          onClick={handleOpenCreateTemplateDialog}
-        >
-          <FormattedMessage id="userConfiguration.settings.templatesLayout.newTemplateBtn" />
-        </Button>
       </div>
       <TemplatesLayoutBody />
       {openCreateTemplateDialog && (

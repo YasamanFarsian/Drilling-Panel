@@ -1,10 +1,22 @@
-import { OperationInfoType } from '@dt-advisory/api/operationInfo/operationInfo.types';
 import { GeoPressureToggleValue } from './components/GeoPressureToggler';
 
+type MudWeightDataPoint = {
+  md?: number;
+  tvd?: number;
+  porePressureEmw?: number;
+  fractionPressureEmw?: number;
+};
+
+type GeoPressureData = {
+  mudWeightData?: MudWeightDataPoint[];
+  fitData?: unknown[];
+};
+
 export type GeoPressureWidgetHelperPropsType = {
-  data?: OperationInfoType['geoPressure'];
+  data?: GeoPressureData;
   mode: GeoPressureToggleValue;
 };
+
 export const geoPressureWidgetHelper = ({ mode, data }: GeoPressureWidgetHelperPropsType) => {
   const placeHolder = [
     { x: 9, y: 27, y0: 18 },
@@ -18,7 +30,7 @@ export const geoPressureWidgetHelper = ({ mode, data }: GeoPressureWidgetHelperP
         y0: x.porePressureEmw,
         y: x.fractionPressureEmw,
       }))
-      .filter((point) => point.x !== null && point.y !== null && point.y0 !== null) ?? placeHolder;
+      .filter((p) => p.x !== null && p.y !== null && p.y0 !== null) ?? placeHolder;
 
   const fracturationPressureInEMW = data?.mudWeightData?.map((x) => ({
     x: (mode === GeoPressureToggleValue.MD ? x.md : x.tvd) ?? 0,
@@ -30,9 +42,5 @@ export const geoPressureWidgetHelper = ({ mode, data }: GeoPressureWidgetHelperP
     y: x.porePressureEmw,
   }));
 
-  return {
-    mudWeightData,
-    fracturationPressureInEMW,
-    porePressureGradientInEMW,
-  };
+  return { mudWeightData, fracturationPressureInEMW, porePressureGradientInEMW };
 };

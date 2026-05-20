@@ -1,6 +1,6 @@
-import { css } from '@emotion/react';
 import { StyleFunction } from '@dt-advisory/styles/theme';
 import { scalePxAsVh } from '@dt-advisory/widgets/helpers/viewportUnitHelpers';
+import { css } from '@emotion/react';
 import { MODAL_LAYOUT_PADDING_X } from '../../UserConfigurationModal.style';
 
 export const userSettingStyle = css`

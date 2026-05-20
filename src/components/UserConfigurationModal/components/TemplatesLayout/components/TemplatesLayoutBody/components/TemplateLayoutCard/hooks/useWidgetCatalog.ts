@@ -1,10 +1,3 @@
-/* eslint-disable max-lines-per-function, max-params */
-import { useState } from 'react';
-import { useIntl } from 'react-intl';
-import { useMutation } from 'react-query';
-import { v4 as uuidv4 } from 'uuid';
-import { userConfigurationSettingsKeys } from '@dt-advisory/api/queryKeysFactories/userConfigurationSettingsKeys';
-import { updateLayout } from '@dt-advisory/api/settings/settings.query';
 import { useSettingsStore } from '@dt-advisory/store/Settings';
 import { useSnackbarStore } from '@dt-advisory/store/SnackbarStore';
 import { useUserConfigurationStore } from '@dt-advisory/store/UserConfiguration/UserConfiguration';
@@ -15,6 +8,8 @@ import {
   WidgetsLoaderEnum,
 } from '@dt-advisory/store/UserConfiguration/UserConfiguration.types';
 import { getGridConfigFromConvertedIndexConfig } from '@dt-advisory/store/UserConfiguration/userConfigurationHelper';
+import { useState } from 'react';
+import { v4 as uuidv4 } from 'uuid';
 
 export const useWidgetCatalog = (templateId: string) => {
   const [widgetCatalogConfig, setWidgetCatalogConfig] = useState({
@@ -22,17 +17,11 @@ export const useWidgetCatalog = (templateId: string) => {
     selectingWidgetIdx: 0,
   });
 
-  const { formatMessage } = useIntl();
-  const openSnackbar = useSnackbarStore((state) => state.actions.openSnackbar);
-  const updateTemplateById = useUserConfigurationStore((x) => x.updateTemplateById);
-  const removeRoadmapSetting = useSettingsStore((state) => state.removeRoadmap);
+  const openSnackbar = useSnackbarStore((s) => s.actions.openSnackbar);
+  const updateTemplateById = useUserConfigurationStore((s) => s.updateTemplateById);
+  const removeRoadmapSetting = useSettingsStore((s) => s.removeRoadmap);
 
-  const editTemplate = useMutation({
-    mutationKey: userConfigurationSettingsKeys.updateLayout(templateId),
-    mutationFn: updateLayout,
-  });
-
-  const handleUpdateWidget = async (
+  const handleUpdateWidget = (
     selectedWidgetKey: WidgetsLoaderEnum,
     templateBody: TemplateBodyType,
     currentSelectedLayout: WidgetLayoutEnum,
@@ -59,54 +48,33 @@ export const useWidgetCatalog = (templateId: string) => {
       },
     };
 
-    const selectedWidgetName = formatMessage({
-      id: `userConfiguration.settings.templatesLayout.widgetLabel.${selectedWidgetKey}`,
-      defaultMessage: selectedWidgetKey,
-    });
-
     const newTemplateBody = {
       ...templateBody,
       gridConfig: newGridConfig,
       widgetConfig: newWidgetConfig,
     };
 
-    try {
-      await editTemplate.mutateAsync({
-        id: templateId,
-        payload: newTemplateBody,
-      });
-    } catch {
-    } finally {
-      updateTemplateById(templateId, newTemplateBody);
-      if (
-        (oldWidgetKey === WidgetsLoaderEnum.RoadmapDrag ||
-          oldWidgetKey === WidgetsLoaderEnum.RoadmapTorque) &&
-        oldWidgetId
-      ) {
-        removeRoadmapSetting(oldWidgetId);
-      }
-      openSnackbar(
-        formatMessage(
-          {
-            id: 'userConfiguration.settings.templatesLayout.snackbarMessage.updateWidgetSuccess',
-          },
-          { widgetName: selectedWidgetName, templateName: newTemplateBody.name },
-        ),
-      );
-      handleCloseWidgetCatalogDialog();
-    }
-  };
+    updateTemplateById(templateId, newTemplateBody);
 
-  const handleOpenWidgetCatalogDialog = (selectingWidgetIdx: number) =>
-    setWidgetCatalogConfig({ open: true, selectingWidgetIdx });
-  const handleCloseWidgetCatalogDialog = () =>
+    if (
+      (oldWidgetKey === WidgetsLoaderEnum.RoadmapDrag ||
+        oldWidgetKey === WidgetsLoaderEnum.RoadmapTorque) &&
+      oldWidgetId
+    ) {
+      removeRoadmapSetting(oldWidgetId);
+    }
+
+    openSnackbar(`Widget "${selectedWidgetKey}" was added to ${newTemplateBody.name}`);
     setWidgetCatalogConfig({ open: false, selectingWidgetIdx: 0 });
+  };
 
   return {
     widgetCatalogConfig,
-    handleOpenWidgetCatalogDialog,
-    handleCloseWidgetCatalogDialog,
+    handleOpenWidgetCatalogDialog: (idx: number) =>
+      setWidgetCatalogConfig({ open: true, selectingWidgetIdx: idx }),
+    handleCloseWidgetCatalogDialog: () =>
+      setWidgetCatalogConfig({ open: false, selectingWidgetIdx: 0 }),
     handleUpdateWidget,
-    isUpdatingTemplateWidget: editTemplate.isLoading,
+    isUpdatingTemplateWidget: false,
   };
 };

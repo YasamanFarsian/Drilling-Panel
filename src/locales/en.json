@@ -479,7 +479,6 @@
   "userConfiguration.settings.headerLayout.dropDown.section": "Section",
   "userConfiguration.settings.headerLayout.dropDown.wellName": "Well Name",
   "userConfiguration.settings.headerLayout.title": "Header Layout",
-  "userConfiguration.settings.tabs.appearanceAndNotifications.label": "Appearance and Notifications",
   "userConfiguration.settings.tabs.layoutSettings.label": "Layout Settings",
   "userConfiguration.settings.templatesLayout.deleteTemplateDialog.confirmBtn": "Delete Template",
   "userConfiguration.settings.templatesLayout.deleteTemplateDialog.description": "Are you sure you want to delete <bold>{name}</bold>? This cannot be undone.",
