@@ -1,188 +1,67 @@
-/* eslint-disable max-lines-per-function, complexity, max-nested-callbacks, @typescript-eslint/no-explicit-any */
-import useHasUserBeenInactive from '@dt-advisory/hooks/useHasUserBeenInactive';
-import { useConfigs } from '@dt-advisory/providers/Configs';
-import MsalAuthentication from '@dt-advisory/services/MsalAuthentication';
-import { useSettingsStore } from '@dt-advisory/store/Settings';
 import { WidgetsEnum } from '@dt-advisory/store/UserConfiguration/UserConfiguration';
-import { useWSConnectionStore } from '@dt-advisory/store/WsConnection';
-import * as signalR from '@microsoft/signalr';
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-
-const TRY_RECONNECT_ATTEMPT_SDK_MS = 300;
-const TRY_RECONNECT_ATTEMPT_MS = 5000;
+import { useEffect, useRef } from 'react';
 
 export type UseWebSocketPropsType = {
+  path: WidgetsEnum;
   getTokenFormHost?: () => Promise<string | void>;
   webSocketUrlFromHost?: string;
   hostOperationId?: string;
-  path: WidgetsEnum;
 };
-// TODO new opt props: getToken() and webSocketUrl: string
-export function useWebSocket({
-  path,
-  webSocketUrlFromHost,
-  getTokenFormHost,
-  hostOperationId,
-}: UseWebSocketPropsType) {
-  const configs = useConfigs();
-  const { enableAuthentication, websocketUrl } = configs;
-  const { operationId } = useSettingsStore((state) => state.settings);
-  const setShouldReconnect = useWSConnectionStore((x) => x.setShouldReconnect);
-  const shouldReconnect = useWSConnectionStore((x) => x.shouldReconnect);
-  const setWsConnectionStates = useWSConnectionStore((x) => x.setWsConnectionStates);
-  const [wsConn, setWsConn] = useState<signalR.HubConnection>();
-  const [isTryReconnect, setIsTryReconnect] = useState(false);
-  const { hasUserBeenInactive, setHasBeenInactive } = useHasUserBeenInactive();
-  const [state, setState] = useState<signalR.HubConnectionState>(
-    signalR.HubConnectionState.Disconnected,
-  );
 
-  const mounted = useRef(false);
-  useEffect(() => {
-    mounted.current = true;
-    return () => {
-      mounted.current = false;
-    };
-  }, []);
+type MockListener = (message: string) => void;
 
-  // handle hubUrl
-  const hubUrl = useMemo(
-    () =>
-      `${new URL(webSocketUrlFromHost ?? websocketUrl).origin}/hub/${path}?opid=${
-        hostOperationId ?? operationId
-      }&access_token=`,
-    [path, operationId, websocketUrl, webSocketUrlFromHost, hostOperationId],
-  );
+// Simulates a SignalR-like hub with on/off/listeners
+class MockHub {
+  private listeners: Partial<Record<string, MockListener>> = {};
 
-  // handle fresh token
-  const getNewHubUrl = useCallback(async () => {
-    let token;
-    if ('function' === typeof getTokenFormHost) {
-      token = await getTokenFormHost();
-    } else if (enableAuthentication) {
-      try {
-        token = await MsalAuthentication.getToken();
-      } catch (e) {
-        console.error(e);
-      }
-    }
-    token = token ?? '';
-    return hubUrl + token;
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [hubUrl, enableAuthentication]);
+  on(event: string, callback: MockListener) {
+    this.listeners[event] = callback;
+  }
 
-  // handle WS instance
-  const getWsInstance = useCallback((newHubUrl: string) => {
-    return new signalR.HubConnectionBuilder()
-      .withUrl(newHubUrl)
-      .withAutomaticReconnect({
-        nextRetryDelayInMilliseconds: (retryContext) => {
-          const retryReason: any = retryContext.retryReason;
-          if (retryReason.statusCode === 401 || retryContext.elapsedMilliseconds > 20000) {
-            setIsTryReconnect(true);
-            return null;
-          }
-          return TRY_RECONNECT_ATTEMPT_SDK_MS;
-        },
-      })
-      .build();
-  }, []);
+  off(event: string) {
+    delete this.listeners[event];
+  }
+
+  emit(event: string, message: string) {
+    this.listeners[event]?.(message);
+  }
+}
+
+export function useWebSocket({ path }: UseWebSocketPropsType) {
+  const hubRef = useRef(new MockHub());
 
   useEffect(() => {
-    getNewHubUrl()
-      .then((newHubUrl) => {
-        const ws = getWsInstance(newHubUrl);
-        setWsConn(ws);
-      })
-      .catch(console.error);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [hubUrl]);
+    const interval = setInterval(() => {
+      hubRef.current.emit(path, JSON.stringify(generateMockData(path)));
+    }, 1000);
+    return () => clearInterval(interval);
+  }, [path]);
 
-  const stopAndStart = useCallback(async () => {
-    try {
-      setShouldReconnect(false);
-      await wsConn?.stop();
-      const newHubUrl = await getNewHubUrl();
-      const ws = getWsInstance(newHubUrl);
-      setWsConn(ws);
-    } catch (e) {
-      console.error(e);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [wsConn, hubUrl]);
+  return { ws: hubRef.current, isConnected: true };
+}
 
-  // handle when connection crashed
-  useEffect(() => {
-    if (isTryReconnect && !hasUserBeenInactive) {
-      const timeoutId = setTimeout(() => {
-        void stopAndStart();
-      }, TRY_RECONNECT_ATTEMPT_MS);
-      return () => {
-        clearTimeout(timeoutId);
-      };
-    }
-    if (isTryReconnect && hasUserBeenInactive) {
-      setHasBeenInactive();
-      void stopAndStart();
-    }
-    setIsTryReconnect(false);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [hubUrl, isTryReconnect, hasUserBeenInactive, stopAndStart]);
+// ─── Mock data generator ─────────────────────────────────────────────────────
+function rand(min: number, max: number) {
+  return +(Math.random() * (max - min) + min).toFixed(2);
+}
 
-  // handle when should reconnect
-  useEffect(() => {
-    const isRoadmapChart = [WidgetsEnum.RoadmapDrag, WidgetsEnum.RoadmapTorque].includes(path);
-    if (shouldReconnect && isRoadmapChart) {
-      void stopAndStart();
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [shouldReconnect, path]);
+function generateMockData(path: WidgetsEnum): object {
+  const base = {
+    currentTime: new Date().toISOString(),
+    isLive: true,
+  };
 
-  useEffect(() => {
-    if (!wsConn) return;
-    setIsTryReconnect(false);
-    let changed = false;
-
-    wsConn
-      .start()
-      .then(() => {
-        setWsConnectionStates({ [path]: true });
-        return !changed && setState(wsConn.state);
-      })
-      .catch((_error) => {
-        wsConn
-          ?.stop()
-          .then(() => {
-            setIsTryReconnect(true);
-            setWsConn(undefined);
-          })
-          .catch(console.error);
-      });
-    wsConn.onreconnecting((_error) => {
-      setWsConnectionStates({ [path]: false });
-    });
-    wsConn.onreconnected((_connectionId) => {
-      setWsConnectionStates({ [path]: true });
-    });
-    wsConn.onclose((_error) => {
-      setWsConnectionStates({ [path]: false });
-    });
-
-    return () => {
-      changed = true;
-      wsConn
-        .stop()
-        .then(() => {
-          setWsConnectionStates({ [path]: false });
-          return mounted.current && setState(wsConn.state);
-        })
-        .catch(console.error);
-    };
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [wsConn]);
-
-  const isConnected = state === signalR.HubConnectionState.Connected;
-
-  return { ws: wsConn, isConnected };
+  switch (path) {
+    case WidgetsEnum.Ecd:
+      return { ...base, ecd: rand(1.1, 1.5), mw: rand(1.0, 1.4), depth: rand(2000, 5000) };
+    case WidgetsEnum.Cutting:
+      return { ...base, cuttingConcentration: rand(0, 100), flowRate: rand(200, 800) };
+    case WidgetsEnum.Wellbore:
+      return { ...base, rop: rand(5, 30), wob: rand(10, 50), rpm: rand(60, 180) };
+    case WidgetsEnum.RoadmapDrag:
+    case WidgetsEnum.RoadmapTorque:
+      return { ...base, planned: rand(100, 200), actual: rand(90, 210) };
+    default:
+      return { ...base, value: rand(0, 100) };
+  }
 }

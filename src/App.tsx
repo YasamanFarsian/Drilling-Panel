@@ -9,6 +9,7 @@ import { ThemeProvider as EmotionThemeProvider } from '@emotion/react';
 import { CssBaseline, StyledEngineProvider } from '@mui/material';
 import { createTheme, ThemeProvider as MuiThemeProvider } from '@mui/material/styles';
 import React, { createContext, useContext, useMemo } from 'react';
+import { HelmetProvider } from 'react-helmet-async';
 import { IntlProvider } from 'react-intl';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { BrowserRouter, useRoutes } from 'react-router-dom';
@@ -22,6 +23,7 @@ export const useLocale = () => useContext(LocaleContext);
 // ─── Embedder ────────────────────────────────────────────────────────────────
 type EmbedderType = { isInIframe: boolean };
 const EmbedderContext = createContext<EmbedderType>({ isInIframe: false });
+export const useEmbedder = () => useContext(EmbedderContext);
 
 // ─── React Query client ──────────────────────────────────────────────────────
 const queryClient = new QueryClient({
@@ -85,20 +87,22 @@ export default function App() {
   }, []);
 
   return (
-    <BrowserRouter>
-      <ThemedApp>
-        <QueryClientProvider client={queryClient}>
-          <EmbedderContext.Provider value={{ isInIframe }}>
-            <ConfigsContext.Provider value={MOCK_CONFIG}>
-              <IntlProvider messages={en} locale="en" defaultLocale="en">
-                <LocaleContext.Provider value={{ locale: 'en' }}>
-                  <AppRoutes />
-                </LocaleContext.Provider>
-              </IntlProvider>
-            </ConfigsContext.Provider>
-          </EmbedderContext.Provider>
-        </QueryClientProvider>
-      </ThemedApp>
-    </BrowserRouter>
+    <HelmetProvider>
+      <BrowserRouter>
+        <ThemedApp>
+          <QueryClientProvider client={queryClient}>
+            <EmbedderContext.Provider value={{ isInIframe }}>
+              <ConfigsContext.Provider value={MOCK_CONFIG}>
+                <IntlProvider messages={en} locale="en" defaultLocale="en">
+                  <LocaleContext.Provider value={{ locale: 'en' }}>
+                    <AppRoutes />
+                  </LocaleContext.Provider>
+                </IntlProvider>
+              </ConfigsContext.Provider>
+            </EmbedderContext.Provider>
+          </QueryClientProvider>
+        </ThemedApp>
+      </BrowserRouter>
+    </HelmetProvider>
   );
 }

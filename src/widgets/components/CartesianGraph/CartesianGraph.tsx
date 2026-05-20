@@ -1,8 +1,8 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
-import React, { HTMLAttributes } from 'react';
-import { VictoryChart, VictoryChartProps, VictoryTheme, VictoryThemeDefinition } from 'victory';
 import { useBaseWidget } from '@dt-advisory/providers/BaseWidget';
 import { WidgetsLoaderEnum } from '@dt-advisory/store/UserConfiguration/UserConfiguration.types';
+import { HTMLAttributes } from 'react';
+import { VictoryChart, VictoryChartProps, VictoryTheme, VictoryThemeDefinition } from 'victory';
 import { containerStyle } from './CartesianGraph.style';
 
 const padding = { left: 90, bottom: 104, right: 30, top: 60 };
@@ -42,7 +42,7 @@ const CartesianGraph = ({
   const currentPadding = customPadding ?? padding;
   const width = dimension?.width ?? 0;
   const height = dimension?.height ?? 0;
-
+  if (!width || !height || !isFinite(width) || !isFinite(height)) return <></>;
   return (
     <div data-testid={`${widgetName}-cartesian_graph`} css={containerStyle(inactive, inslips)}>
       <VictoryChart
